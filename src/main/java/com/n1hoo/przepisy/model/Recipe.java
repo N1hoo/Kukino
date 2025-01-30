@@ -18,68 +18,44 @@ public class Recipe {
     private LocalDateTime createdAt;
     private LocalDateTime publishedAt;
 
-    // Gettery i settery
-    public String getId() {
-        return id;
+    // 🔹 Konstruktor domyślny wymagany przez Spring Boot
+    public Recipe() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
+    // 🔹 Konstruktor inicjalizujący wszystkie pola (opcjonalny)
+    public Recipe(String title, List<String> ingredients, String instructions, String author) {
         this.title = title;
-    }
-
-    public List<String> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
         this.instructions = instructions;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
         this.author = author;
+        this.popularity = 0;
+        this.createdAt = LocalDateTime.now();
+        this.publishedAt = null;
     }
 
-    public int getPopularity() {
-        return popularity;
-    }
+    // 🔹 Gettery i settery
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setPopularity(int popularity) {
-        this.popularity = popularity;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public List<String> getIngredients() { return ingredients; }
+    public void setIngredients(List<String> ingredients) { this.ingredients = ingredients; }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public String getInstructions() { return instructions; }
+    public void setInstructions(String instructions) { this.instructions = instructions; }
 
-    public LocalDateTime getPublishedAt() {
-        return publishedAt;
-    }
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
 
-    public void setPublishedAt(LocalDateTime publishedAt) {
-        this.publishedAt = publishedAt;
-    }
+    public int getPopularity() { return popularity; }
+    public void setPopularity(int popularity) { this.popularity = popularity; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getPublishedAt() { return publishedAt; }
+    public void setPublishedAt(LocalDateTime publishedAt) { this.publishedAt = publishedAt; }
 }
