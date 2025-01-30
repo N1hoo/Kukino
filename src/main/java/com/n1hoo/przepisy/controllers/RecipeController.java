@@ -1,6 +1,6 @@
 package com.n1hoo.przepisy.controllers;
 
-import com.n1hoo.przepisy.model.Recipe; // Upewnij się, że importujesz właściwy model!
+import com.n1hoo.przepisy.model.Recipe;
 import com.n1hoo.przepisy.service.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

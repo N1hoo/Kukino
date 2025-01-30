@@ -3,14 +3,17 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function searchRecipes() {
-    const query = document.getElementById("searchInput").value;
+    const query = document.getElementById("searchInput").value.trim();
     if (!query) {
         alert("❗ Wpisz nazwę przepisu lub składnik!");
         return;
     }
 
-    axios.get(`/api/recipes/search?query=${query}`)
+    console.log(`🔍 Wyszukiwanie przepisów dla: ${query}`);
+
+    axios.get(`/api/recipes/search?query=${encodeURIComponent(query)}`)
         .then(response => {
+            console.log("📡 Odpowiedź API:", response.data);
             const recipes = response.data;
             const recipesList = document.getElementById("recipesList");
             recipesList.innerHTML = ""; // Wyczyść poprzednie wyniki
@@ -21,12 +24,20 @@ function searchRecipes() {
                 recipes.forEach(recipe => {
                     const listItem = document.createElement("li");
                     listItem.className = "list-group-item";
-                    listItem.innerHTML = `<strong>${recipe.title}</strong> <br> 🥘 Składniki: ${recipe.ingredients.join(", ")}`;
+                    listItem.innerHTML = `
+                        <strong>${recipe.title}</strong><br> 
+                        🥘 Składniki: ${recipe.ingredients.join(", ")}<br>
+                        📜 Instrukcje: ${recipe.instructions}
+                    `;
                     recipesList.appendChild(listItem);
                 });
             }
         })
         .catch(error => {
             console.error("❌ Błąd pobierania przepisów", error);
+            alert("🚨 Błąd połączenia z serwerem!");
         });
 }
+
+// Testowanie
+window.searchRecipes = searchRecipes;
