@@ -2,55 +2,26 @@ package com.n1hoo.przepisy.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.List;
 
-@Document(collection = "Users")
+@Document(collection = "users") // Musi być, żeby MongoDB wiedziało, gdzie zapisywać!
 public class User {
     @Id
     private String id;
-    private String name;
-    private String email;
-    private List<String> favorites;
-    private List<String> history;
 
-    // Gettery i settery
-    public String getId() {
-        return id;
+    private String username;
+    private String password;
+
+    public User() {}
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getId() { return id; }
+    public String getUsername() { return username; }
+    public String getPassword() { return password; }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<String> getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(List<String> favorites) {
-        this.favorites = favorites;
-    }
-
-    public List<String> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<String> history) {
-        this.history = history;
-    }
+    public void setUsername(String username) { this.username = username; }
+    public void setPassword(String password) { this.password = password; }
 }

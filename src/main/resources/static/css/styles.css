@@ -17,4 +17,32 @@ h1 {
     background-color: #ffffff;
     border: 1px solid #ddd;
     margin-top: 5px;
+
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+}
+
+input {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 200px;
+}
+
+button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+p {
+    color: red;
+    font-weight: bold;
 }

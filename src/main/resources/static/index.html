@@ -21,6 +21,43 @@
         <ul id="recipesList" class="list-group mt-2"></ul>
     </div>
 
+    <h1>🍽️ Aplikacja Przepisy - Logowanie</h1>
+
+    <div id="login-container">
+        <h2>🔐 Zaloguj się</h2>
+        <input type="text" id="login-username" placeholder="Nazwa użytkownika">
+        <input type="password" id="login-password" placeholder="Hasło">
+        <button onclick="login()">Zaloguj</button>
+        <p id="login-message"></p>
+    </div>
+
+    <div id="register-container">
+        <h2>📝 Zarejestruj się</h2>
+        <input type="text" id="register-username" placeholder="Nazwa użytkownika">
+        <input type="password" id="register-password" placeholder="Hasło">
+        <button onclick="register()">Zarejestruj</button>
+        <p id="register-message"></p>
+    </div>
+
+    <div id="user-panel" style="display:none;">
+    <h2>👤 Panel Użyszkodnika</h2>
+    <p>Witaj, <span id="user-name"></span>!</p>
+
+    <h3>🔒 Zmień hasło</h3>
+    <input type="password" id="new-password" placeholder="Nowe hasło">
+    <button onclick="changePassword()">🔄 Zmień hasło</button>
+    <p id="password-message"></p>
+
+    <h3>⚠️ Usuń konto</h3>
+    <button onclick="deleteAccount()" class="btn btn-danger">❌ Usuń konto</button>
+    <p id="delete-message"></p>
+
+    <h3>📜 Twoje przepisy</h3>
+    <ul id="user-recipes" class="list-group"></ul>
+
+    <button onclick="logout()">🚪 Wyloguj</button>
+</div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/kukino.js" defer></script>
 </body>
