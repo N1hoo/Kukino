@@ -112,6 +112,68 @@ function deleteAccount() {
     .catch(error => console.error("❌ Błąd usuwania konta", error));
 }
 
+function addRecipe() {
+    const title = document.getElementById("recipe-title").value.trim();
+    const ingredients = document.getElementById("recipe-ingredients").value.trim().split(",");
+    const instructions = document.getElementById("recipe-instructions").value.trim();
+
+    if (!title || ingredients.length === 0 || !instructions) {
+        document.getElementById("recipe-message").innerText = "⚠️ Uzupełnij wszystkie pola!";
+        return;
+    }
+
+    fetch("/api/recipes/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, ingredients, instructions })
+    })
+    .then(response => response.text())
+    .then(message => {
+        document.getElementById("recipe-message").innerText = message;
+        loadUserRecipes(); // Odśwież listę przepisów
+    })
+    .catch(error => console.error("❌ Błąd dodawania przepisu", error));
+}
+
+function loadUserRecipes() {
+    fetch("/api/recipes/my")
+    .then(response => response.json())
+    .then(recipes => {
+        const list = document.getElementById("user-recipes");
+        list.innerHTML = "";
+
+        if (recipes.length === 0) {
+            list.innerHTML = "<li class='list-group-item text-danger'>🚫 Brak przepisów</li>";
+        } else {
+            recipes.forEach(recipe => {
+                const listItem = document.createElement("li");
+                listItem.className = "list-group-item";
+                listItem.innerHTML = `
+                    <strong>${recipe.title}</strong><br>
+                    🥘 Składniki: ${recipe.ingredients.join(", ")}<br>
+                    📜 Instrukcje: ${recipe.instructions}<br>
+                    <button onclick="editRecipe('${recipe.id}')">✏️ Edytuj</button>
+                    <button onclick="deleteRecipe('${recipe.id}')" class="btn btn-danger">❌ Usuń</button>
+                `;
+                list.appendChild(listItem);
+            });
+        }
+    })
+    .catch(error => console.error("❌ Błąd ładowania przepisów", error));
+}
+
+function deleteRecipe(recipeId) {
+    if (!confirm("⚠️ Na pewno chcesz usunąć ten przepis?")) return;
+
+    fetch(`/api/recipes/delete/${recipeId}`, { method: "DELETE" })
+    .then(response => response.text())
+    .then(message => {
+        alert(message);
+        loadUserRecipes(); // Odśwież listę przepisów
+    })
+    .catch(error => console.error("❌ Błąd usuwania przepisu", error));
+}
+
 function searchRecipes() {
     const query = document.getElementById("searchInput").value.trim();
     if (!query) {

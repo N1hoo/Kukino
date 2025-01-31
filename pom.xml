@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.2</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>com.n1hoo</groupId>
@@ -39,12 +39,6 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
-        <!-- Spring Boot Data JPA (dla relacyjnej bazy, np. MySQL, PostgreSQL) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
         <!-- Spring Boot Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -57,10 +51,10 @@
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
 
-        <!-- Spring Boot Starter JDBC (dla sesji) -->
+        <!-- Spring Boot Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <!-- OpenAPI/Swagger -->
@@ -68,13 +62,6 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.1.0</version>
-        </dependency>
-
-        <!-- Wewnętrzna baza danych H2 (do testowania) -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- Testy -->

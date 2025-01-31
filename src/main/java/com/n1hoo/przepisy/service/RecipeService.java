@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RecipeService {
@@ -20,30 +21,48 @@ public class RecipeService {
         this.recipeRepository = recipeRepository;
     }
 
-    // Dodawanie nowego przepisu
+    // 🔹 Dodawanie nowego przepisu
     @CacheEvict(value = "popularRecipes", allEntries = true) // Czyszczenie cache przy dodaniu nowego przepisu
     public Recipe addRecipe(Recipe recipe) {
-        logger.info("Dodawanie nowego przepisu: {}", recipe.getTitle());
+        logger.info("📌 Dodawanie nowego przepisu: {}", recipe.getTitle());
         return recipeRepository.save(recipe);
     }
 
-    // Wyszukiwanie przepisów po tytule
+    // 🔹 Wyszukiwanie przepisów po tytule
     public List<Recipe> searchByTitle(String title) {
-        logger.debug("Wyszukiwanie przepisów po tytule: {}", title);
+        logger.debug("🔍 Wyszukiwanie przepisów po tytule: {}", title);
         return recipeRepository.findByTitleContainingIgnoreCase(title);
     }
 
-    // Wyszukiwanie przepisów po składniku
+    // 🔹 Wyszukiwanie przepisów po składniku
     public List<Recipe> searchByIngredient(String ingredient) {
-        logger.debug("Wyszukiwanie przepisów po składniku: {}", ingredient);
+        logger.debug("🔍 Wyszukiwanie przepisów po składniku: {}", ingredient);
         return recipeRepository.findByIngredientsContainingIgnoreCase(ingredient);
     }
 
-    // Pobieranie popularnych przepisów z cache lub bazy danych
+    // 🔹 Pobieranie popularnych przepisów z cache lub bazy danych
     @Cacheable(value = "popularRecipes")
     public List<Recipe> getPopularRecipes() {
-        logger.info("Pobieranie popularnych przepisów z bazy danych.");
-        // Tu można dodać logikę sortowania według popularności
-        return recipeRepository.findAll(); // Tymczasowa implementacja
+        logger.info("📊 Pobieranie popularnych przepisów z bazy danych.");
+        // Można dodać sortowanie według popularności
+        return recipeRepository.findAll();
+    }
+
+    // 🔹 Pobieranie przepisów użytkownika
+    public List<Recipe> getRecipesByAuthor(String author) {
+        logger.debug("📜 Pobieranie przepisów użytkownika: {}", author);
+        return recipeRepository.findByAuthor(author);
+    }
+
+    // 🔹 Pobieranie pojedynczego przepisu
+    public Optional<Recipe> getRecipeById(String id) {
+        logger.debug("🔍 Pobieranie przepisu o ID: {}", id);
+        return recipeRepository.findById(id);
+    }
+
+    // 🔹 Usuwanie przepisu
+    public void deleteRecipe(String id) {
+        logger.warn("🗑️ Usuwanie przepisu o ID: {}", id);
+        recipeRepository.deleteById(id);
     }
 }

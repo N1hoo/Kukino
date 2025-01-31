@@ -2,10 +2,12 @@ package com.n1hoo.przepisy.controllers;
 
 import com.n1hoo.przepisy.model.Recipe;
 import com.n1hoo.przepisy.service.RecipeService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -16,12 +18,20 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @PostMapping
-    public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe recipe) {
-        Recipe savedRecipe = recipeService.addRecipe(recipe);
-        return ResponseEntity.ok(savedRecipe);
+    // 🔹 Dodawanie nowego przepisu
+    @PostMapping("/add")
+    public ResponseEntity<String> addRecipe(@RequestBody Recipe recipe, HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return ResponseEntity.status(401).body("🚫 Nie jesteś zalogowany!");
+        }
+
+        recipe.setAuthor(username);
+        recipeService.addRecipe(recipe);
+        return ResponseEntity.ok("✅ Przepis dodany!");
     }
 
+    // 🔹 Wyszukiwanie przepisów po tytule i składnikach
     @GetMapping("/search")
     public ResponseEntity<List<Recipe>> searchRecipes(@RequestParam String query) {
         List<Recipe> recipesByTitle = recipeService.searchByTitle(query);
@@ -29,5 +39,33 @@ public class RecipeController {
         recipesByIngredient.removeAll(recipesByTitle);
         recipesByTitle.addAll(recipesByIngredient);
         return ResponseEntity.ok(recipesByTitle);
+    }
+
+    // 🔹 Pobieranie przepisów użytkownika
+    @GetMapping("/my")
+    public ResponseEntity<List<Recipe>> getUserRecipes(HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        return ResponseEntity.ok(recipeService.getRecipesByAuthor(username));
+    }
+
+    // 🔹 Usuwanie przepisu (tylko swojego!)
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteRecipe(@PathVariable String id, HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return ResponseEntity.status(401).body("🚫 Nie jesteś zalogowany!");
+        }
+
+        Optional<Recipe> recipe = recipeService.getRecipeById(id);
+        if (recipe.isEmpty() || !recipe.get().getAuthor().equals(username)) {
+            return ResponseEntity.status(403).body("🚫 Nie możesz usunąć tego przepisu!");
+        }
+
+        recipeService.deleteRecipe(id);
+        return ResponseEntity.ok("✅ Przepis usunięty!");
     }
 }

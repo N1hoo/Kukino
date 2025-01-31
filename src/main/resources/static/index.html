@@ -41,21 +41,32 @@
 
     <div id="user-panel" style="display:none;">
     <h2>👤 Panel Użyszkodnika</h2>
-    <p>Witaj, <span id="user-name"></span>!</p>
+        <p>Witaj, <span id="user-name"></span>!</p>
 
     <h3>🔒 Zmień hasło</h3>
     <input type="password" id="new-password" placeholder="Nowe hasło">
     <button onclick="changePassword()">🔄 Zmień hasło</button>
     <p id="password-message"></p>
+        <h3>➕ Dodaj nowy przepis</h3>
+        <input type="text" id="recipe-title" placeholder="Tytuł przepisu">
+        <textarea id="recipe-ingredients" placeholder="Składniki (oddzielone przecinkami)"></textarea>
+        <textarea id="recipe-instructions" placeholder="Instrukcje"></textarea>
+        <button onclick="addRecipe()">📌 Dodaj przepis</button>
+        <p id="recipe-message"></p>
+
+    <h3>📝 Twoje przepisy</h3>
+        <ul id="user-recipes" class="list-group"></ul>
+
 
     <h3>⚠️ Usuń konto</h3>
-    <button onclick="deleteAccount()" class="btn btn-danger">❌ Usuń konto</button>
-    <p id="delete-message"></p>
+        <button onclick="deleteAccount()" class="btn btn-danger">❌ Usuń konto</button>
+        <p id="delete-message"></p>
 
     <h3>📜 Twoje przepisy</h3>
-    <ul id="user-recipes" class="list-group"></ul>
+        <ul id="user-recipes" class="list-group"></ul>
 
     <button onclick="logout()">🚪 Wyloguj</button>
+
 </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Document(collection = "Przepisy")
+@Document(collection = "recipes") // WAŻNE: MongoDB musi mieć poprawną nazwę kolekcji!
 public class Recipe {
     @Id
     private String id;
@@ -23,7 +23,7 @@ public class Recipe {
         this.createdAt = LocalDateTime.now();
     }
 
-    // 🔹 Konstruktor inicjalizujący wszystkie pola (opcjonalny)
+    // 🔹 Konstruktor inicjalizujący wszystkie pola
     public Recipe(String title, List<String> ingredients, String instructions, String author) {
         this.title = title;
         this.ingredients = ingredients;
