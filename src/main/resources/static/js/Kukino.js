@@ -63,6 +63,9 @@ function checkLoginStatus() {
         document.getElementById("login-container").style.display = "none";
         document.getElementById("register-container").style.display = "none";
         document.getElementById("user-name").innerText = username.replace("✅ Zalogowany jako: ", "");
+        
+        console.log("🔄 Wczytywanie moich przepisów...");
+        loadUserRecipes(); // 🔥 AUTOMATYCZNE WYCZYTANIE PRZEPISÓW PO ZALOGOWANIU!
     })
     .catch(() => {
         document.getElementById("user-panel").style.display = "none";
@@ -70,6 +73,7 @@ function checkLoginStatus() {
         document.getElementById("register-container").style.display = "block";
     });
 }
+
 
 function logout() {
     fetch("/api/auth/logout", { method: "POST" })
@@ -140,26 +144,27 @@ function loadUserRecipes() {
     .then(response => response.json())
     .then(recipes => {
         const list = document.getElementById("user-recipes");
-        list.innerHTML = "";
+        list.innerHTML = ""; // 🔄 Wyczyść poprzednie wyniki
 
-        if (recipes.length === 0) {
+        if (!recipes || recipes.length === 0) {
             list.innerHTML = "<li class='list-group-item text-danger'>🚫 Brak przepisów</li>";
-        } else {
-            recipes.forEach(recipe => {
-                const listItem = document.createElement("li");
-                listItem.className = "list-group-item";
-                listItem.innerHTML = `
-                    <strong>${recipe.title}</strong><br>
-                    🥘 Składniki: ${recipe.ingredients.join(", ")}<br>
-                    📜 Instrukcje: ${recipe.instructions}<br>
-                    <button onclick="editRecipe('${recipe.id}')">✏️ Edytuj</button>
-                    <button onclick="deleteRecipe('${recipe.id}')" class="btn btn-danger">❌ Usuń</button>
-                `;
-                list.appendChild(listItem);
-            });
+            return;
         }
+
+        recipes.forEach(recipe => {
+            const listItem = document.createElement("li");
+            listItem.className = "list-group-item";
+            listItem.innerHTML = `
+                <strong>${recipe.title}</strong><br>
+                🥘 Składniki: ${recipe.ingredients.join(", ")}<br>
+                📜 Instrukcje: ${recipe.instructions}<br>
+                <button onclick="editRecipe('${recipe.id}')" class="btn btn-primary">✏️ Edytuj</button>
+                <button onclick="deleteRecipe('${recipe.id}')" class="btn btn-danger">❌ Usuń</button>
+            `;
+            list.appendChild(listItem);
+        });
     })
-    .catch(error => console.error("❌ Błąd ładowania przepisów", error));
+    .catch(error => console.error("❌ Błąd ładowania moich przepisów", error));
 }
 
 function deleteRecipe(recipeId) {
@@ -183,28 +188,23 @@ function searchRecipes() {
 
     console.log(`🔍 Wyszukiwanie przepisów dla: ${query}`);
 
-    fetch(`/api/recipes/search?query=${encodeURIComponent(query)}`)
+    axios.get(`/api/recipes/search?query=${encodeURIComponent(query)}`)
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`Błąd API: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("📡 Odpowiedź API:", data);
+            console.log("📡 Odpowiedź API:", response.data);
+            const recipes = response.data;
             const recipesList = document.getElementById("recipesList");
             recipesList.innerHTML = ""; // Wyczyść poprzednie wyniki
 
-            if (data.length === 0) {
+            if (recipes.length === 0) {
                 recipesList.innerHTML = "<li class='list-group-item text-danger'>🚫 Brak wyników</li>";
             } else {
-                data.forEach(recipe => {
+                recipes.forEach(recipe => {
                     const listItem = document.createElement("li");
                     listItem.className = "list-group-item";
                     listItem.innerHTML = `
                         <strong>${recipe.title}</strong><br> 
                         🥘 Składniki: ${recipe.ingredients.join(", ")}<br>
-                        📜 Instrukcje: ${recipe.instructions}
+                        📜 Instrukcje: ${recipe.instructions}<br>
                     `;
                     recipesList.appendChild(listItem);
                 });
@@ -212,7 +212,8 @@ function searchRecipes() {
         })
         .catch(error => {
             console.error("❌ Błąd pobierania przepisów", error);
-            alert(`🚨 Błąd: ${error.message}`);
+            alert("🚨 Błąd połączenia z serwerem!");
         });
 }
+
 window.searchRecipes = searchRecipes;

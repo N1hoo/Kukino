@@ -18,13 +18,16 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             .requestMatchers("/", "/index.html", "/css/**", "/js/**").permitAll()
             .requestMatchers("/api/auth/**").permitAll()
             .requestMatchers("/api/recipes/**").permitAll()
-            .requestMatchers("/api/user/change-password").authenticated()
-            .requestMatchers("/api/user/delete").authenticated()
             .anyRequest().authenticated()
         )
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)); // Sesja ma działać!
+        .sessionManagement(session -> session
+            .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // NIE USTAWIAJ NA STATELESS!
+        )
+        .rememberMe(remember -> remember.key("superSecretKey").alwaysRemember(true)); // Sesja zostaje
+
     return http.build();
 }
+
 
 
 }

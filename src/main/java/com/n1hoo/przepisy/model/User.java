@@ -3,11 +3,10 @@ package com.n1hoo.przepisy.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "users") // Musi być, żeby MongoDB wiedziało, gdzie zapisywać!
+@Document(collection = "users")
 public class User {
     @Id
     private String id;
-
     private String username;
     private String password;
 
