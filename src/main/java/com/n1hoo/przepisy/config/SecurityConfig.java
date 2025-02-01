@@ -15,19 +15,13 @@ public class SecurityConfig {
             .cors(cors -> cors.disable())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/favicon.ico").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/recipes/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
-            .rememberMe(remember -> remember
-                .key("superSecretKey")
-                .alwaysRemember(true)
-            );
+            .rememberMe(remember -> remember.key("superSecretKey").alwaysRemember(true));
         return http.build();
     }
-    
+   
 }

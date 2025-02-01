@@ -181,18 +181,11 @@ function deleteRecipe(recipeId) {
     .catch(error => console.error("❌ Błąd usuwania przepisu", error));
 }
 
+// Wczytywanie popularnych przepisów
 function loadPopularRecipes() {
     fetch("/api/recipes/popular")
-        .then(response => {
-            console.log("Status: " + response.status);
-            return response.text();
-        })
-        .then(text => {
-            console.log("Surowa odpowiedź: '" + text + "'");
-            return JSON.parse(text || "[]");  // jeśli text jest pusty, parsujemy "[]"
-        })
+        .then(response => response.json())
         .then(recipes => {
-            // przetwarzanie listy przepisów
             const list = document.getElementById("popularRecipesList");
             list.innerHTML = ""; // Wyczyść listę
             if (!recipes || recipes.length === 0) {
@@ -202,17 +195,61 @@ function loadPopularRecipes() {
             recipes.forEach(recipe => {
                 const listItem = document.createElement("li");
                 listItem.className = "list-group-item";
-                listItem.innerHTML = `
-                    <strong>${recipe.title}</strong><br> 
-                    🥘 Składniki: ${recipe.ingredients.join(", ")}<br>
-                    📜 Instrukcje: ${recipe.instructions}
-                `;
+                
+                // Utwórz element <a> dla tytułu przepisu
+                const titleLink = document.createElement("a");
+                titleLink.href = "#"; // zapobiegamy domyślnemu zachowaniu linku
+                titleLink.textContent = recipe.title;
+                titleLink.style.fontWeight = "bold";
+                titleLink.addEventListener("click", function(e) {
+                    e.preventDefault();  // zapobiegamy przewinięciu strony
+                    viewRecipeDetails(recipe.id);
+                });
+                
+                const ingredientsDiv = document.createElement("div");
+                ingredientsDiv.innerHTML = "🥘 Składniki: " + recipe.ingredients.join(", ");
+                
+                const popularitySpan = document.createElement("span");
+                popularitySpan.textContent = " Wyświetlenia: " + recipe.popularity;
+                
+                listItem.appendChild(titleLink);
+                listItem.appendChild(document.createElement("br"));
+                listItem.appendChild(ingredientsDiv);
+                listItem.appendChild(document.createElement("br"));
+                listItem.appendChild(popularitySpan);
+                
                 list.appendChild(listItem);
             });
         })
         .catch(error => {
             console.error("❌ Błąd pobierania popularnych przepisów", error);
             alert("🚨 Błąd połączenia z serwerem!");
+        });
+}
+
+function viewRecipeDetails(recipeId) {
+    fetch(`/api/recipes/view/${recipeId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Nie znaleziono przepisu (status: ${response.status})`);
+            }
+            return response.json();
+        })
+        .then(recipe => {
+            if (!recipe || !recipe.ingredients) {
+                throw new Error("Brak danych przepisu");
+            }
+            alert(
+                `Tytuł: ${recipe.title}\n` +
+                `Składniki: ${recipe.ingredients.join(", ")}\n` +
+                `Instrukcje: ${recipe.instructions}\n` +
+                `Popularność: ${recipe.popularity}`
+            );
+            loadPopularRecipes();
+        })
+        .catch(error => {
+            console.error("❌ Błąd pobierania szczegółów przepisu:", error);
+            alert("❌ " + error.message);
         });
 }
 

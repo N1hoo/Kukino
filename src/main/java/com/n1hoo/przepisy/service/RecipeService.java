@@ -5,7 +5,6 @@ import com.n1hoo.przepisy.repository.RecipeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,7 +20,23 @@ public class RecipeService {
     public RecipeService(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
-
+    
+    // Wyświetlanie przepisu
+    public Recipe viewRecipe(String id) {
+        logger.debug("Wywołano viewRecipe z id: {}", id);
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+        if (optionalRecipe.isPresent()) {
+            Recipe recipe = optionalRecipe.get();
+            recipe.setPopularity(recipe.getPopularity() + 1);
+            logger.debug("Znaleziono przepis: {}. Nowa popularność: {}", recipe.getTitle(), recipe.getPopularity());
+            return recipeRepository.save(recipe);
+        } else {
+            logger.warn("Nie znaleziono przepisu o id: {}", id);
+        }
+        return null;
+    }
+    
+    
     // Dodawanie nowego przepisu
     @CacheEvict(value = "popularRecipes", allEntries = true) // Czyszczenie cache przy dodaniu nowego przepisu
     public Recipe addRecipe(Recipe recipe) {
@@ -42,9 +57,9 @@ public class RecipeService {
     }
 
     // Pobieranie popularnych przepisów z Redis
-    @Cacheable(value = "popularRecipes", key = "'top10'")
     public List<Recipe> getPopularRecipes() {
         List<Recipe> recipes = recipeRepository.findTop10ByOrderByPopularityDesc();
+        logger.debug("Popular recipes retrieved: {}", recipes);
         return recipes != null ? recipes : new ArrayList<>();
     }
 

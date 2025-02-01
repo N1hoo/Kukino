@@ -18,7 +18,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    // 🔹 Dodawanie nowego przepisu
+    // Dodawanie nowego przepisu
     @PostMapping("/add")
     public ResponseEntity<String> addRecipe(@RequestBody Recipe recipe, HttpSession session) {
         String username = (String) session.getAttribute("user");
@@ -30,8 +30,17 @@ public class RecipeController {
         recipeService.addRecipe(recipe);
         return ResponseEntity.ok("✅ Przepis dodany!");
     }
+    // Wyświetlanie przepisu
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Recipe> viewRecipe(@PathVariable String id) {
+        Recipe recipe = recipeService.viewRecipe(id);
+        if (recipe != null) {
+            return ResponseEntity.ok(recipe);
+        }
+        return ResponseEntity.notFound().build();
+    }
 
-    // 🔹 Wyszukiwanie przepisów po tytule i składnikach
+    // Wyszukiwanie przepisów po tytule i składnikach
     @GetMapping("/search")
     public ResponseEntity<List<Recipe>> searchRecipes(@RequestParam String query) {
         List<Recipe> recipesByTitle = recipeService.searchByTitle(query);
@@ -41,14 +50,13 @@ public class RecipeController {
         return ResponseEntity.ok(recipesByTitle);
     }
 
-    // 🔹 Pobieranie przepisów użytkownika
+    // Pobieranie przepisów użytkownika
     @GetMapping("/my")
     public ResponseEntity<List<Recipe>> getUserRecipes(HttpSession session) {
         String username = (String) session.getAttribute("user");
         if (username == null) {
             return ResponseEntity.status(401).build();
         }
-
         return ResponseEntity.ok(recipeService.getRecipesByAuthor(username));
     }
 
@@ -57,7 +65,7 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.getPopularRecipes());
     }
 
-    // 🔹 Usuwanie przepisu (tylko swojego!)
+    // Usuwanie przepisu (tylko swojego!)
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteRecipe(@PathVariable String id, HttpSession session) {
         String username = (String) session.getAttribute("user");
