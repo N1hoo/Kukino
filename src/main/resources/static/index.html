@@ -21,9 +21,12 @@
         <ul id="recipesList" class="list-group mt-2"></ul>
     </div>
 
-    <h1>🍽️ Aplikacja Kukino - Logowanie</h1>
+    <h1>🍽️ Aplikacja Kukino</h1>
     <h2 class="mt-4">🔥 Najpopularniejsze przepisy:</h2>
     <ul id="popularRecipesList" class="list-group mt-2"></ul>
+    
+    <!-- Dodajemy kontener na szczegóły przepisu -->
+    <div id="recipeDetails" class="container mt-3"></div>
     
     <div id="login-container">
         <h2>🔐 Zaloguj się</h2>
@@ -42,13 +45,18 @@
     </div>
 
     <div id="user-panel" style="display:none;">
-    <h2>👤 Panel Użyszkodnika</h2>
+        <h2>👤 Panel Użyszkodnika</h2>
         <p>Witaj, <span id="user-name"></span>!</p>
+    
+        <h3>❤️ Ulubione przepisy</h3>
+        <button onclick="loadFavorites()">Załaduj ulubione</button>
+        <ul id="favoritesList" class="list-group"></ul>  
       
-    <h3>🔒 Zmień hasło</h3>
-    <input type="password" id="new-password" placeholder="Nowe hasło">
-    <button onclick="changePassword()">🔄 Zmień hasło</button>
-    <p id="password-message"></p>
+        <h3>🔒 Zmień hasło</h3>
+        <input type="password" id="new-password" placeholder="Nowe hasło">
+        <button onclick="changePassword()">🔄 Zmień hasło</button>
+        <p id="password-message"></p>
+        
         <h3>➕ Dodaj nowy przepis</h3>
         <input type="text" id="recipe-title" placeholder="Tytuł przepisu">
         <textarea id="recipe-ingredients" placeholder="Składniki (oddzielone przecinkami)"></textarea>
@@ -56,20 +64,13 @@
         <button onclick="addRecipe()">📌 Dodaj przepis</button>
         <p id="recipe-message"></p>
 
-    <h3>📝 Twoje przepisy</h3>
+        <h3>📝 Twoje przepisy</h3>
         <ul id="user-recipes" class="list-group"></ul>
 
-
-    <h3>⚠️ Usuń konto</h3>
+        <h3>⚠️ Usuń konto</h3>
         <button onclick="deleteAccount()" class="btn btn-danger">❌ Usuń konto</button>
         <p id="delete-message"></p>
-
-    <h3>📜 Twoje przepisy</h3>
-        <ul id="user-recipes" class="list-group"></ul>
-
-    <button onclick="logout()">🚪 Wyloguj</button>
-
-</div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/kukino.js" defer></script>

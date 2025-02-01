@@ -1,12 +1,16 @@
 package com.n1hoo.przepisy.controllers;
 
+import com.n1hoo.przepisy.model.Recipe;
 import com.n1hoo.przepisy.model.User;
+import com.n1hoo.przepisy.repository.RecipeRepository;
 import com.n1hoo.przepisy.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -14,12 +18,78 @@ import java.util.Optional;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserRepository userRepository;
+    private final RecipeRepository recipeRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, RecipeRepository recipeRepository) {
         this.userRepository = userRepository;
+        this.recipeRepository = recipeRepository;
+    }
+        // 1. Dodanie przepisu do ulubionych
+    @PostMapping("/favorites/{recipeId}")
+    public ResponseEntity<String> addFavorite(@PathVariable String recipeId, HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return ResponseEntity.status(401).body("🚫 Nie jesteś zalogowany!");
+        }
+
+        // Sprawdź, czy przepis istnieje
+        if (!recipeRepository.existsById(recipeId)) {
+            return ResponseEntity.status(404).body("❌ Nie ma takiego przepisu!");
+        }
+
+        // Wczytaj użytkownika i dodaj ID przepisu do listy
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(404).body("❌ Nie znaleziono użytkownika");
+        }
+
+        if (!user.getFavorites().contains(recipeId)) {
+            user.getFavorites().add(recipeId);
+            userRepository.save(user);
+        }
+        return ResponseEntity.ok("✅ Dodano do ulubionych!");
     }
 
+    // 2. Usunięcie przepisu z ulubionych
+    @DeleteMapping("/favorites/{recipeId}")
+    public ResponseEntity<String> removeFavorite(@PathVariable String recipeId, HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return ResponseEntity.status(401).body("🚫 Nie jesteś zalogowany!");
+        }
+
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(404).body("❌ Nie znaleziono użytkownika");
+        }
+
+        if (user.getFavorites().contains(recipeId)) {
+            user.getFavorites().remove(recipeId);
+            userRepository.save(user);
+            return ResponseEntity.ok("✅ Usunięto z ulubionych!");
+        } else {
+            return ResponseEntity.status(404).body("❌ Ten przepis nie jest w ulubionych!");
+        }
+    }
+
+    // 3. Pobranie listy ulubionych (wraz z danymi przepisów)
+    @GetMapping("/favorites")
+    public ResponseEntity<?> getFavorites(HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return ResponseEntity.status(401).body("🚫 Nie jesteś zalogowany!");
+        }
+
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(404).body("❌ Nie znaleziono użytkownika");
+        }
+
+        // Pobieramy przepisy na podstawie listy ID w `user.getFavorites()`
+        List<Recipe> favoriteRecipes = recipeRepository.findAllById(user.getFavorites());
+        return ResponseEntity.ok(favoriteRecipes);
+    }
     @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody Map<String, String> request, HttpSession session) {
         String username = (String) session.getAttribute("user");

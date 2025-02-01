@@ -76,7 +76,6 @@ function checkLoginStatus() {
     });
 }
 
-
 function logout() {
     fetch("/api/auth/logout", { method: "POST" })
     .then(() => {
@@ -236,7 +235,7 @@ function viewRecipeDetails(recipeId) {
             return response.json();
         })
         .then(recipe => {
-            if (!recipe || !recipe.ingredients) {
+            if (!recipe || !recipe.ingredients) {   
                 throw new Error("Brak danych przepisu");
             }
             alert(
@@ -246,11 +245,92 @@ function viewRecipeDetails(recipeId) {
                 `Popularność: ${recipe.popularity}`
             );
             loadPopularRecipes();
+        const detailsDiv = document.getElementById("recipeDetails");
+            detailsDiv.innerHTML = `
+              <h3>${recipe.title}</h3>
+              <p>Składniki: ${recipe.ingredients.join(", ")}</p>
+              <p>Instrukcje: ${recipe.instructions}</p>
+              <button onclick="addToFavorites('${recipe.id}')">❤️ Dodaj do ulubionych</button>
+            `;
         })
         .catch(error => {
             console.error("❌ Błąd pobierania szczegółów przepisu:", error);
             alert("❌ " + error.message);
         });
+}
+
+function addToFavorites(recipeId) {
+    fetch(`/api/user/favorites/${recipeId}`, {
+        method: "POST"
+    })
+    .then(response => response.text())
+    .then(message => {
+        alert(message);
+        // ewentualnie wywołaj loadFavorites() jeżeli chcesz od razu odświeżyć listę
+    })
+    .catch(error => console.error("❌ Błąd dodawania do ulubionych", error));
+}
+
+function removeFromFavorites(recipeId) {
+    fetch(`/api/user/favorites/${recipeId}`, {
+        method: "DELETE"
+    })
+    .then(response => response.text())
+    .then(message => {
+        alert(message);
+        loadFavorites(); // po usunięciu ładujemy listę od nowa
+    })
+    .catch(error => console.error("❌ Błąd usuwania z ulubionych", error));
+}
+
+function loadFavorites() {
+    fetch("/api/user/favorites")
+    .then(response => {
+        if(!response.ok) throw new Error("Błąd pobierania ulubionych");
+        return response.json();
+    })
+    .then(recipes => {
+        const favList = document.getElementById("favoritesList");
+        favList.innerHTML = ""; 
+
+        if(!recipes || recipes.length === 0) {
+            favList.innerHTML = "<li class='list-group-item text-danger'>Brak ulubionych</li>";
+            return;
+        }
+
+        recipes.forEach(recipe => {
+            const listItem = document.createElement("li");
+            listItem.className = "list-group-item";
+        
+            // Link z tytułem, klikalny jak w "Popularnych"
+            const titleLink = document.createElement("a");
+            titleLink.href = "#"; 
+            titleLink.textContent = recipe.title;
+            titleLink.style.fontWeight = "bold";
+            titleLink.addEventListener("click", function(e) {
+                e.preventDefault(); 
+                viewRecipeDetails(recipe.id); // Pokaż szczegóły przepisu
+            });
+        
+            const ingredientsDiv = document.createElement("div");
+            ingredientsDiv.textContent = "🥘 Składniki: " + recipe.ingredients.join(", ");
+        
+            // Przycisk „Dodaj do ulubionych”
+            const favBtn = document.createElement("button");
+            favBtn.textContent = "❤️ Dodaj do ulubionych";
+            favBtn.addEventListener("click", () => addToFavorites(recipe.id));
+        
+            // Składanie elementów w listItem
+            listItem.appendChild(titleLink);
+            listItem.appendChild(document.createElement("br"));
+            listItem.appendChild(ingredientsDiv);
+            listItem.appendChild(document.createElement("br"));
+            listItem.appendChild(favBtn);
+        
+            recipesList.appendChild(listItem);
+        });
+    })
+    .catch(err => console.error("❌ Błąd ładowania ulubionych", err));
 }
 
 function searchRecipes() {
