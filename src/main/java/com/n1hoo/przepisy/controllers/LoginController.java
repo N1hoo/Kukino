@@ -29,6 +29,18 @@ public class LoginController {
         return ResponseEntity.status(401).body("❌ Błędne dane logowania!");
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody User user) {
+        Optional<User> existing = userRepository.findByUsername(user.getUsername());
+        if (existing.isPresent()) {
+            return ResponseEntity.status(400).body("❌ Użytkownik o podanej nazwie już istnieje!");
+        }
+        // Szyfruj hasło przed zapisem
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return ResponseEntity.ok("✅ Zarejestrowano pomyślnie!");
+}
+
     @GetMapping("/status")
     public ResponseEntity<String> checkLoginStatus(HttpSession session) {
         String username = (String) session.getAttribute("user");

@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ Frontend załadowany!");
     checkLoginStatus();
+    checkLoginStatus();
+    loadPopularRecipes(); // Ładowanie najpopularniejszych przepisów
 });
 
 function register() {
@@ -177,6 +179,41 @@ function deleteRecipe(recipeId) {
         loadUserRecipes(); // Odśwież listę przepisów
     })
     .catch(error => console.error("❌ Błąd usuwania przepisu", error));
+}
+
+function loadPopularRecipes() {
+    fetch("/api/recipes/popular")
+        .then(response => {
+            console.log("Status: " + response.status);
+            return response.text();
+        })
+        .then(text => {
+            console.log("Surowa odpowiedź: '" + text + "'");
+            return JSON.parse(text || "[]");  // jeśli text jest pusty, parsujemy "[]"
+        })
+        .then(recipes => {
+            // przetwarzanie listy przepisów
+            const list = document.getElementById("popularRecipesList");
+            list.innerHTML = ""; // Wyczyść listę
+            if (!recipes || recipes.length === 0) {
+                list.innerHTML = "<li class='list-group-item text-danger'>🚫 Brak popularnych przepisów</li>";
+                return;
+            }
+            recipes.forEach(recipe => {
+                const listItem = document.createElement("li");
+                listItem.className = "list-group-item";
+                listItem.innerHTML = `
+                    <strong>${recipe.title}</strong><br> 
+                    🥘 Składniki: ${recipe.ingredients.join(", ")}<br>
+                    📜 Instrukcje: ${recipe.instructions}
+                `;
+                list.appendChild(listItem);
+            });
+        })
+        .catch(error => {
+            console.error("❌ Błąd pobierania popularnych przepisów", error);
+            alert("🚨 Błąd połączenia z serwerem!");
+        });
 }
 
 function searchRecipes() {

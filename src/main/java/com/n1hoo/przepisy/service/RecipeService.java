@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,46 +22,45 @@ public class RecipeService {
         this.recipeRepository = recipeRepository;
     }
 
-    // 🔹 Dodawanie nowego przepisu
+    // Dodawanie nowego przepisu
     @CacheEvict(value = "popularRecipes", allEntries = true) // Czyszczenie cache przy dodaniu nowego przepisu
     public Recipe addRecipe(Recipe recipe) {
         logger.info("📌 Dodawanie nowego przepisu: {}", recipe.getTitle());
         return recipeRepository.save(recipe);
     }
 
-    // 🔹 Wyszukiwanie przepisów po tytule
+    // Wyszukiwanie przepisów po tytule
     public List<Recipe> searchByTitle(String title) {
         logger.debug("🔍 Wyszukiwanie przepisów po tytule: {}", title);
         return recipeRepository.findByTitleContainingIgnoreCase(title);
     }
 
-    // 🔹 Wyszukiwanie przepisów po składniku
+    // Wyszukiwanie przepisów po składniku
     public List<Recipe> searchByIngredient(String ingredient) {
         logger.debug("🔍 Wyszukiwanie przepisów po składniku: {}", ingredient);
         return recipeRepository.findByIngredientsContainingIgnoreCase(ingredient);
     }
 
-    // 🔹 Pobieranie popularnych przepisów z cache lub bazy danych
-    @Cacheable(value = "popularRecipes")
+    // Pobieranie popularnych przepisów z Redis
+    @Cacheable(value = "popularRecipes", key = "'top10'")
     public List<Recipe> getPopularRecipes() {
-        logger.info("📊 Pobieranie popularnych przepisów z bazy danych.");
-        // Można dodać sortowanie według popularności
-        return recipeRepository.findAll();
+        List<Recipe> recipes = recipeRepository.findTop10ByOrderByPopularityDesc();
+        return recipes != null ? recipes : new ArrayList<>();
     }
 
-    // 🔹 Pobieranie przepisów użytkownika
+    // Pobieranie przepisów użytkownika
     public List<Recipe> getRecipesByAuthor(String author) {
         logger.debug("📜 Pobieranie przepisów użytkownika: {}", author);
         return recipeRepository.findByAuthor(author);
     }
 
-    // 🔹 Pobieranie pojedynczego przepisu
+    // Pobieranie pojedynczego przepisu
     public Optional<Recipe> getRecipeById(String id) {
         logger.debug("🔍 Pobieranie przepisu o ID: {}", id);
         return recipeRepository.findById(id);
     }
 
-    // 🔹 Usuwanie przepisu
+    // Usuwanie przepisu
     public void deleteRecipe(String id) {
         logger.warn("🗑️ Usuwanie przepisu o ID: {}", id);
         recipeRepository.deleteById(id);

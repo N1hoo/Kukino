@@ -18,12 +18,12 @@ public class Recipe {
     private LocalDateTime createdAt;
     private LocalDateTime publishedAt;
 
-    // 🔹 Konstruktor domyślny wymagany przez Spring Boot
+    // Konstruktor domyślny wymagany przez Spring Boot
     public Recipe() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // 🔹 Konstruktor inicjalizujący wszystkie pola
+    // Konstruktor inicjalizujący wszystkie pola
     public Recipe(String title, List<String> ingredients, String instructions, String author) {
         this.title = title;
         this.ingredients = ingredients;
@@ -34,7 +34,7 @@ public class Recipe {
         this.publishedAt = null;
     }
 
-    // 🔹 Gettery i settery
+    // Gettery i settery
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 

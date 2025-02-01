@@ -52,6 +52,11 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.getRecipesByAuthor(username));
     }
 
+    @GetMapping("/popular")
+    public ResponseEntity<List<Recipe>> getPopularRecipes() {
+        return ResponseEntity.ok(recipeService.getPopularRecipes());
+    }
+
     // 🔹 Usuwanie przepisu (tylko swojego!)
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteRecipe(@PathVariable String id, HttpSession session) {

@@ -8,4 +8,5 @@ public interface RecipeRepository extends MongoRepository<Recipe, String> {
     List<Recipe> findByTitleContainingIgnoreCase(String title);
     List<Recipe> findByIngredientsContainingIgnoreCase(String ingredient);
     List<Recipe> findByAuthor(String author);
+    List<Recipe> findTop10ByOrderByPopularityDesc();
 }
