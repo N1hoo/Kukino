@@ -64,6 +64,34 @@ public class RecipeController {
     public ResponseEntity<List<Recipe>> getPopularRecipes() {
         return ResponseEntity.ok(recipeService.getPopularRecipes());
     }
+    @PutMapping("/edit/{id}")
+public ResponseEntity<String> editRecipe(@PathVariable String id,
+                                        @RequestBody Recipe updatedRecipe,
+                                        HttpSession session) {
+    String username = (String) session.getAttribute("user");
+    if (username == null) {
+        return ResponseEntity.status(401).body("🚫 Nie jesteś zalogowany!");
+    }
+
+    Optional<Recipe> optionalRecipe = recipeService.getRecipeById(id);
+    if (optionalRecipe.isEmpty()) {
+        return ResponseEntity.status(404).body("❌ Nie znaleziono przepisu!");
+    }
+
+    Recipe recipe = optionalRecipe.get();
+    if (!recipe.getAuthor().equals(username)) {
+        return ResponseEntity.status(403).body("🚫 To nie jest Twój przepis!");
+    }
+
+    // Aktualizujemy tylko wybrane pola (wg potrzeb)
+    recipe.setTitle(updatedRecipe.getTitle());
+    recipe.setIngredients(updatedRecipe.getIngredients());
+    recipe.setInstructions(updatedRecipe.getInstructions());
+
+    // Zapisujemy zmiany
+    recipeService.addRecipe(recipe); // albo recipeRepository.save(recipe)
+    return ResponseEntity.ok("✅ Przepis zaktualizowany!");
+}
 
     // Usuwanie przepisu (tylko swojego!)
     @DeleteMapping("/delete/{id}")

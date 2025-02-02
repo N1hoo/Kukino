@@ -168,6 +168,33 @@ function loadUserRecipes() {
     .catch(error => console.error("❌ Błąd ładowania moich przepisów", error));
 }
 
+function editRecipe(recipeId) {
+    const newTitle = prompt("Nowy tytuł:");
+    const newIngredients = prompt("Składniki (po przecinku):");
+    const newInstructions = prompt("Instrukcje:");
+
+    // Jeśli user kliknie „Anuluj” w prompt, przerwij
+    if (newTitle === null || newIngredients === null || newInstructions === null) return;
+
+    const updatedRecipe = {
+        title: newTitle,
+        ingredients: newIngredients.split(","),
+        instructions: newInstructions
+    };
+
+    fetch(`/api/recipes/edit/${recipeId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedRecipe)
+    })
+    .then(response => response.text())
+    .then(msg => {
+        alert(msg);
+        loadUserRecipes(); // Odśwież listę po edycji
+    })
+    .catch(err => console.error("❌ Błąd edycji przepisu", err));
+}
+
 function deleteRecipe(recipeId) {
     if (!confirm("⚠️ Na pewno chcesz usunąć ten przepis?")) return;
 
