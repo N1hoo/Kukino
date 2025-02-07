@@ -9,7 +9,6 @@ public class FaviconController {
 
     @GetMapping("favicon.ico")
     public ResponseEntity<Void> favicon() {
-        // Zwracamy 204 No Content – przeglądarka nie otrzyma żadnych danych
         return ResponseEntity.noContent().build();
     }
 }
