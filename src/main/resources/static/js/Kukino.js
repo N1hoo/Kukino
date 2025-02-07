@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadPopularRecipes(); // Ładowanie najpopularniejszych przepisów
 });
 
+//Rejestracja
 function register() {
     const username = document.getElementById("register-username").value.trim();
     const password = document.getElementById("register-password").value.trim();
@@ -26,6 +27,7 @@ function register() {
     .catch(error => console.error("❌ Błąd rejestracji", error));
 }
 
+// Logowanie
 function login() {
     const username = document.getElementById("login-username").value.trim();
     const password = document.getElementById("login-password").value.trim();
@@ -54,6 +56,7 @@ function login() {
     });
 }
 
+//Sprawdzanie logowania
 function checkLoginStatus() {
     fetch("/api/auth/status")
     .then(response => {
@@ -67,7 +70,7 @@ function checkLoginStatus() {
         document.getElementById("user-name").innerText = username.replace("✅ Zalogowany jako: ", "");
         
         console.log("🔄 Wczytywanie moich przepisów...");
-        loadUserRecipes(); // 🔥 AUTOMATYCZNE WYCZYTANIE PRZEPISÓW PO ZALOGOWANIU!
+        loadUserRecipes(); // AUTOMATYCZNE WYCZYTANIE PRZEPISÓW PO ZALOGOWANIU!
     })
     .catch(() => {
         document.getElementById("user-panel").style.display = "none";
@@ -76,6 +79,7 @@ function checkLoginStatus() {
     });
 }
 
+// Wylogowywanie
 function logout() {
     fetch("/api/auth/logout", { method: "POST" })
     .then(() => {
@@ -84,6 +88,8 @@ function logout() {
     })
     .catch(error => console.error("❌ Błąd wylogowania", error));
 }
+
+// Zmiana hasła
 function changePassword() {
     const newPassword = document.getElementById("new-password").value.trim();
     if (!newPassword) {
@@ -103,6 +109,7 @@ function changePassword() {
     .catch(error => console.error("❌ Błąd zmiany hasła", error));
 }
 
+//Usuwanie konta
 function deleteAccount() {
     if (!confirm("⚠️ Na pewno chcesz usunąć konto? Tej operacji nie można cofnąć!")) {
         return;
@@ -117,6 +124,7 @@ function deleteAccount() {
     .catch(error => console.error("❌ Błąd usuwania konta", error));
 }
 
+//Dodawanie przepisu
 function addRecipe() {
     const title = document.getElementById("recipe-title").value.trim();
     const ingredients = document.getElementById("recipe-ingredients").value.trim().split(",");
@@ -140,6 +148,7 @@ function addRecipe() {
     .catch(error => console.error("❌ Błąd dodawania przepisu", error));
 }
 
+//Wczytywanie przepisów użytkownika
 function loadUserRecipes() {
     fetch("/api/recipes/my")
     .then(response => response.json())
@@ -168,6 +177,7 @@ function loadUserRecipes() {
     .catch(error => console.error("❌ Błąd ładowania moich przepisów", error));
 }
 
+// Edycja przepisów
 function editRecipe(recipeId) {
     const newTitle = prompt("Nowy tytuł:");
     const newIngredients = prompt("Składniki (po przecinku):");
@@ -195,6 +205,7 @@ function editRecipe(recipeId) {
     .catch(err => console.error("❌ Błąd edycji przepisu", err));
 }
 
+//Usuwanie przepisu
 function deleteRecipe(recipeId) {
     if (!confirm("⚠️ Na pewno chcesz usunąć ten przepis?")) return;
 
@@ -222,13 +233,12 @@ function loadPopularRecipes() {
                 const listItem = document.createElement("li");
                 listItem.className = "list-group-item";
                 
-                // Utwórz element <a> dla tytułu przepisu
                 const titleLink = document.createElement("a");
-                titleLink.href = "#"; // zapobiegamy domyślnemu zachowaniu linku
+                titleLink.href = "#";
                 titleLink.textContent = recipe.title;
                 titleLink.style.fontWeight = "bold";
                 titleLink.addEventListener("click", function(e) {
-                    e.preventDefault();  // zapobiegamy przewinięciu strony
+                    e.preventDefault();
                     viewRecipeDetails(recipe.id);
                 });
                 
@@ -253,6 +263,7 @@ function loadPopularRecipes() {
         });
 }
 
+// Szczegóły przepisu
 function viewRecipeDetails(recipeId) {
     fetch(`/api/recipes/view/${recipeId}`)
         .then(response => {
@@ -286,6 +297,7 @@ function viewRecipeDetails(recipeId) {
         });
 }
 
+// Dodawanie do Ulubionych
 function addToFavorites(recipeId) {
     fetch(`/api/user/favorites/${recipeId}`, {
         method: "POST"
@@ -293,11 +305,11 @@ function addToFavorites(recipeId) {
     .then(response => response.text())
     .then(message => {
         alert(message);
-        // ewentualnie wywołaj loadFavorites() jeżeli chcesz od razu odświeżyć listę
     })
     .catch(error => console.error("❌ Błąd dodawania do ulubionych", error));
 }
 
+//Usuwanie z Ulubionych
 function removeFromFavorites(recipeId) {
     fetch(`/api/user/favorites/${recipeId}`, {
         method: "DELETE"
@@ -305,11 +317,12 @@ function removeFromFavorites(recipeId) {
     .then(response => response.text())
     .then(message => {
         alert(message);
-        loadFavorites(); // po usunięciu ładujemy listę od nowa
+        loadFavorites();
     })
     .catch(error => console.error("❌ Błąd usuwania z ulubionych", error));
 }
 
+// Wczytywanie Ulubionych
 function loadFavorites() {
     fetch("/api/user/favorites")
     .then(response => {
@@ -329,14 +342,13 @@ function loadFavorites() {
             const listItem = document.createElement("li");
             listItem.className = "list-group-item";
         
-            // Link z tytułem, klikalny jak w "Popularnych"
             const titleLink = document.createElement("a");
             titleLink.href = "#"; 
             titleLink.textContent = recipe.title;
             titleLink.style.fontWeight = "bold";
             titleLink.addEventListener("click", function(e) {
                 e.preventDefault(); 
-                viewRecipeDetails(recipe.id); // Pokaż szczegóły przepisu
+                viewRecipeDetails(recipe.id);
             });
         
             const ingredientsDiv = document.createElement("div");
@@ -360,6 +372,7 @@ function loadFavorites() {
     .catch(err => console.error("❌ Błąd ładowania ulubionych", err));
 }
 
+// Szukanie
 function searchRecipes() {
     const query = document.getElementById("searchInput").value.trim();
     if (!query) {
@@ -374,7 +387,7 @@ function searchRecipes() {
             console.log("📡 Odpowiedź API:", response.data);
             const recipes = response.data;
             const recipesList = document.getElementById("recipesList");
-            recipesList.innerHTML = ""; // Wyczyść poprzednie wyniki
+            recipesList.innerHTML = "";
 
             if (recipes.length === 0) {
                 recipesList.innerHTML = "<li class='list-group-item text-danger'>🚫 Brak wyników</li>";

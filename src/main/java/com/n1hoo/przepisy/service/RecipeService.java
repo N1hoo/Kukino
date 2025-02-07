@@ -36,7 +36,6 @@ public class RecipeService {
         return null;
     }
     
-    
     // Dodawanie nowego przepisu
     @CacheEvict(value = "popularRecipes", allEntries = true) // Czyszczenie cache przy dodaniu nowego przepisu
     public Recipe addRecipe(Recipe recipe) {

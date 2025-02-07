@@ -13,7 +13,7 @@ public class User {
     private String username;
     private String password;
 
-    // Pole na ulubione przepisy
+    // Ulubione przepisy
     private List<String> favorites = new ArrayList<>();
 
     // Konstruktor domyślny
