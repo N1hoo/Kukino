@@ -2,7 +2,6 @@ package com.n1hoo.przepisy.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,6 +11,7 @@ public class User {
     private String id;
     private String username;
     private String password;
+    private String role = "USER";
 
     // Ulubione przepisy
     private List<String> favorites = new ArrayList<>();
@@ -35,6 +35,14 @@ public class User {
     
     public String getPassword() {
         return password;
+    }
+    
+    public String getRole() {
+        return role;
+    }
+    
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<String> getFavorites() {

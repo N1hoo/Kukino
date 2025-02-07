@@ -89,7 +89,7 @@ public ResponseEntity<String> editRecipe(@PathVariable String id,
     recipe.setInstructions(updatedRecipe.getInstructions());
 
     // Zapisujemy zmiany
-    recipeService.addRecipe(recipe); // albo recipeRepository.save(recipe)
+    recipeService.addRecipe(recipe);
     return ResponseEntity.ok("✅ Przepis zaktualizowany!");
 }
 
