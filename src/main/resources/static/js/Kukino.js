@@ -354,19 +354,20 @@ function loadFavorites() {
             const ingredientsDiv = document.createElement("div");
             ingredientsDiv.textContent = "🥘 Składniki: " + recipe.ingredients.join(", ");
         
-            // Przycisk „Dodaj do ulubionych”
-            const favBtn = document.createElement("button");
-            favBtn.textContent = "❤️ Dodaj do ulubionych";
-            favBtn.addEventListener("click", () => addToFavorites(recipe.id));
+            // Przycisk „Usuń z ulubionych”
+            const removeFavBtn = document.createElement("button");
+            removeFavBtn.textContent = "❌ Usuń z ulubionych";
+            removeFavBtn.className = "btn btn-danger btn-sm ms-2";
+            removeFavBtn.addEventListener("click", () => removeFromFavorites(recipe.id));
         
-            // Składanie elementów w listItem
+            // Składanie elementów w liście
             listItem.appendChild(titleLink);
             listItem.appendChild(document.createElement("br"));
             listItem.appendChild(ingredientsDiv);
             listItem.appendChild(document.createElement("br"));
-            listItem.appendChild(favBtn);
+            listItem.appendChild(removeFavBtn);
         
-            recipesList.appendChild(listItem);
+            favList.appendChild(listItem);
         });
     })
     .catch(err => console.error("❌ Błąd ładowania ulubionych", err));

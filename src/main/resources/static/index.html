@@ -44,11 +44,13 @@
     </div>
 
     <div id="user-panel" style="display:none;">
-        <h2>👤 Panel Użyszkodnika</h2>
+        <h2>👤 Panel Użytkownika</h2>
         <p>Witaj, <span id="user-name"></span>!</p>
+        <!-- Przycisk wylogowywania -->
+        <button onclick="logout()" class="btn btn-secondary mb-3">Wyloguj</button>
     
         <h3>❤️ Ulubione przepisy</h3>
-        <button onclick="loadFavorites()">Załaduj ulubione</button>
+        <button onclick="loadFavorites()" class="btn btn-outline-primary mb-2">Załaduj ulubione</button>
         <ul id="favoritesList" class="list-group"></ul>  
       
         <h3>🔒 Zmień hasło</h3>
