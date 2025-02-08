@@ -56,7 +56,7 @@ function login() {
     });
 }
 
-//Sprawdzanie logowania
+// Sprawdzanie logowania
 function checkLoginStatus() {
     fetch("/api/auth/status")
     .then(response => {
@@ -205,7 +205,7 @@ function editRecipe(recipeId) {
     .catch(err => console.error("❌ Błąd edycji przepisu", err));
 }
 
-//Usuwanie przepisu
+// Usuwanie przepisu
 function deleteRecipe(recipeId) {
     if (!confirm("⚠️ Na pewno chcesz usunąć ten przepis?")) return;
 
@@ -247,12 +247,22 @@ function loadPopularRecipes() {
                 
                 const popularitySpan = document.createElement("span");
                 popularitySpan.textContent = " Wyświetlenia: " + recipe.popularity;
-                
+
+                // Dodaj przycisk "Dodaj do ulubionych"
+                const favBtn = document.createElement("button");
+                favBtn.textContent = "❤️ Dodaj do ulubionych";
+                favBtn.className = "btn btn-primary btn-sm ms-2 mt-2";
+                favBtn.addEventListener("click", function(){
+                    addToFavorites(recipe.id);
+                });
+
                 listItem.appendChild(titleLink);
                 listItem.appendChild(document.createElement("br"));
                 listItem.appendChild(ingredientsDiv);
                 listItem.appendChild(document.createElement("br"));
                 listItem.appendChild(popularitySpan);
+                listItem.appendChild(document.createElement("br"));
+                listItem.appendChild(favBtn);
                 
                 list.appendChild(listItem);
             });
@@ -309,7 +319,7 @@ function addToFavorites(recipeId) {
     .catch(error => console.error("❌ Błąd dodawania do ulubionych", error));
 }
 
-//Usuwanie z Ulubionych
+// Usuwanie z Ulubionych
 function removeFromFavorites(recipeId) {
     fetch(`/api/user/favorites/${recipeId}`, {
         method: "DELETE"
@@ -397,9 +407,10 @@ function searchRecipes() {
                     const listItem = document.createElement("li");
                     listItem.className = "list-group-item";
                     listItem.innerHTML = `
-                        <strong>${recipe.title}</strong><br> 
+                        <strong>${recipe.title}</strong><br>
                         🥘 Składniki: ${recipe.ingredients.join(", ")}<br>
                         📜 Instrukcje: ${recipe.instructions}<br>
+                        <button onclick="addToFavorites('${recipe.id}')" class="btn btn-primary btn-sm mt-2">❤️ Dodaj do ulubionych</button>
                     `;
                     recipesList.appendChild(listItem);
                 });
