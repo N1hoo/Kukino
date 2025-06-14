@@ -73,7 +73,7 @@ Wybrano nierelacyjne bazy danych, ponieważ struktura przepisu (dynamiczna lista
   przepisy/
   ├── src/
   │   ├── main/
-  │   │   ├── java/com/n1hoo/przepisy/
+  │   │   ├── java/com/n1hoo/Kukino/
   │   │   │   ├── controllers/
   │   │   │   ├── model/
   │   │   │   ├── repository/
