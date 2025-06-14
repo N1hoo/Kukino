@@ -56,7 +56,7 @@ Wybrano nierelacyjne bazy danych, ponieważ struktura przepisu (dynamiczna lista
 
 1. Sklonuj repozytorium:
    ```bash
-   git clone https://github.com/TwojeRepozytorium/przepisy.git
+   git clone https://github.com/N1hoo/Kukino.git
    cd 
 2. Uruchom bazę MongoDB i Redis.
 
