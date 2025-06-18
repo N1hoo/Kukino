@@ -1,4 +1,4 @@
-package com.n1hoo.przepisy.config;
+package com.n1hoo.Kukino.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

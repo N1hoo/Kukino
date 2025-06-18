@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# 🍲 Kukino – System Informatyczny do Zarządzania Przepisami
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Projekt zespołowy realizowany w ramach przedmiotu **"Projekt zespołowy systemu informatycznego"**. Celem było stworzenie pełnoprawnej aplikacji webowej do zarządzania przepisami kulinarnymi z wykorzystaniem technologii backendowych, baz danych oraz interfejsu użytkownika.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 👥 Skład zespołu
+- Paweł Pawłowski (20998)
+- Mateusz Szczęch (20331)
+- Emilia Tymosiewicz (16728)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🎯 Główne funkcjonalności
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 🔐 **Rejestracja i logowanie użytkowników (BCrypt + HttpSession)**
+- 👤 **Panel użytkownika** z listą ulubionych i własnych przepisów
+- 📝 **Dodawanie, edytowanie i usuwanie przepisów kulinarnych**
+- 🔍 **Wyszukiwanie przepisów po tytule i składnikach**
+- 📈 **Lista najpopularniejszych przepisów (Redis cache)**
+- 🛠️ **Panel administratora** z zarządzaniem użytkownikami i przepisami
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🧰 Technologie i biblioteki
 
-### `npm run build`
+| Warstwa | Technologia |
+|--------|-------------|
+| Backend | Java 23, Spring Boot 3 |
+| Baza danych | MongoDB (NoSQL) |
+| Cache | Redis |
+| UI | HTML5, CSS3, Bootstrap |
+| API docs | Swagger / OpenAPI |
+| Logowanie | Spring Security + HttpSession |
+| Build | Maven |
+| Deployment | Spring Boot JAR |
+| Repozytorium | GitHub |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🧠 Uzasadnienie technologii
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Wybrano nierelacyjne bazy danych, ponieważ struktura przepisu (dynamiczna lista składników, instrukcje, daty) lepiej pasuje do elastycznego modelu dokumentowego MongoDB. Redis zapewnia natychmiastowy dostęp do najpopularniejszych przepisów, zwiększając wydajność aplikacji.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🖥️ Uruchamianie aplikacji
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 🔧 Wymagania:
+- Java 17+ (lub Java 23)
+- MongoDB (`localhost:27017`)
+- Redis (`localhost:6379`)
+- Maven (`mvn` w konsoli)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🚀 Kroki:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Sklonuj repozytorium:
+   ```bash
+   git clone https://github.com/N1hoo/Kukino
+   cd 
+2. Uruchom bazę MongoDB i Redis.
 
-## Learn More
+3. Zbuduj aplikację:
+  mvn clean install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+5. Uruchom:
+  mvn spring-boot:run
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+6. Otwórz w przeglądarce:
+  http://localhost:8080/
 
-### Code Splitting
+## 🗂️ Struktura katalogów
+  przepisy/
+  ├── src/
+  │   ├── main/
+  │   │   ├── java/com/n1hoo/Kukino/
+  │   │   │   ├── controllers/
+  │   │   │   ├── model/
+  │   │   │   ├── repository/
+  │   │   │   └── service/
+  │   │   └── resources/
+  │   │       ├── static/        # HTML, CSS, JS
+  │   │       └── application.properties
+  ├── pom.xml
+  └── README.md
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📄 Licencja
+  Projekt stworzony wyłącznie do celów edukacyjnych w ramach przedmiotu „Projekt zespołowy systemu informatycznego”.

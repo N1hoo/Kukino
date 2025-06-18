@@ -1,4 +1,4 @@
-package com.n1hoo.przepisy.model;
+package com.n1hoo.Kukino.model;
 
 import java.util.ArrayList;
 import java.util.List;

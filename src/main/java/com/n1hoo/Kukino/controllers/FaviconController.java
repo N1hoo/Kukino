@@ -1,4 +1,4 @@
-package com.n1hoo.przepisy.controllers;
+package com.n1hoo.Kukino.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

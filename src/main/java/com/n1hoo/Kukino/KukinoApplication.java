@@ -1,13 +1,13 @@
-package com.n1hoo.przepisy;
+package com.n1hoo.Kukino;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PrzepisyApplication {
+public class KukinoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PrzepisyApplication.class, args);
+		SpringApplication.run(KukinoApplication.class, args);
 	}
 
 }

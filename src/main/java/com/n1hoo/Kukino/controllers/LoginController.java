@@ -1,7 +1,7 @@
-package com.n1hoo.przepisy.controllers;
+package com.n1hoo.Kukino.controllers;
 
-import com.n1hoo.przepisy.model.User;
-import com.n1hoo.przepisy.repository.UserRepository;
+import com.n1hoo.Kukino.model.User;
+import com.n1hoo.Kukino.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>com.n1hoo</groupId>
-    <artifactId>przepisy</artifactId>
+    <artifactId>Kukino</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>przepisy</name>
+    <name>Kukino</name>
     <description>Aplikacja do zarządzania przepisami kulinarnymi</description>
 
     <properties>

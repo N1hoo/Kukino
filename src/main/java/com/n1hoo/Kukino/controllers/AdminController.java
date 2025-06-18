@@ -1,8 +1,8 @@
-package com.n1hoo.przepisy.controllers;
+package com.n1hoo.Kukino.controllers;
 
-import com.n1hoo.przepisy.model.User;
-import com.n1hoo.przepisy.repository.RecipeRepository;
-import com.n1hoo.przepisy.repository.UserRepository;
+import com.n1hoo.Kukino.model.User;
+import com.n1hoo.Kukino.repository.RecipeRepository;
+import com.n1hoo.Kukino.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;

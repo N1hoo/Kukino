@@ -1,6 +1,6 @@
-package com.n1hoo.przepisy.repository;
+package com.n1hoo.Kukino.repository;
 
-import com.n1hoo.przepisy.model.User;
+import com.n1hoo.Kukino.model.User;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;

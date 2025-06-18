@@ -1,10 +1,10 @@
-package com.n1hoo.przepisy;
+package com.n1hoo.Kukino;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PrzepisyApplicationTests {
+class KukinoApplicationTests {
 
 	@Test
 	void contextLoads() {

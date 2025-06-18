@@ -1,7 +1,7 @@
-package com.n1hoo.przepisy.service;
+package com.n1hoo.Kukino.service;
 
-import com.n1hoo.przepisy.model.Recipe;
-import com.n1hoo.przepisy.repository.RecipeRepository;
+import com.n1hoo.Kukino.model.Recipe;
+import com.n1hoo.Kukino.repository.RecipeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;

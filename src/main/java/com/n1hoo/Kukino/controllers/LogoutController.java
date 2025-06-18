@@ -1,4 +1,4 @@
-package com.n1hoo.przepisy.controllers;
+package com.n1hoo.Kukino.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;

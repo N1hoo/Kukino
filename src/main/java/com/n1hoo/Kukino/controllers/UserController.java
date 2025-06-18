@@ -1,9 +1,9 @@
-package com.n1hoo.przepisy.controllers;
+package com.n1hoo.Kukino.controllers;
 
-import com.n1hoo.przepisy.model.Recipe;
-import com.n1hoo.przepisy.model.User;
-import com.n1hoo.przepisy.repository.RecipeRepository;
-import com.n1hoo.przepisy.repository.UserRepository;
+import com.n1hoo.Kukino.model.Recipe;
+import com.n1hoo.Kukino.model.User;
+import com.n1hoo.Kukino.repository.RecipeRepository;
+import com.n1hoo.Kukino.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;

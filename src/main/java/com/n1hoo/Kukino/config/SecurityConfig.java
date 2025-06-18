@@ -1,4 +1,4 @@
-package com.n1hoo.przepisy.config;
+package com.n1hoo.Kukino.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

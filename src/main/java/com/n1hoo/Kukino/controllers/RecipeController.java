@@ -1,7 +1,7 @@
-package com.n1hoo.przepisy.controllers;
+package com.n1hoo.Kukino.controllers;
 
-import com.n1hoo.przepisy.model.Recipe;
-import com.n1hoo.przepisy.service.RecipeService;
+import com.n1hoo.Kukino.model.Recipe;
+import com.n1hoo.Kukino.service.RecipeService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
