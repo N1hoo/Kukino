@@ -4,40 +4,29 @@ import com.n1hoo.Kukino.model.Recipe;
 import com.n1hoo.Kukino.repository.RecipeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class RecipeService {
     private static final Logger logger = LoggerFactory.getLogger(RecipeService.class);
     private final RecipeRepository recipeRepository;
-    private final RedisTemplate<String, Object> redisTemplate;
 
-    public RecipeService(RecipeRepository recipeRepository, RedisTemplate<String, Object> redisTemplate) {
+    public RecipeService(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
-        this.redisTemplate = redisTemplate;
     }
 
-    // 🟢 Wyświetlanie przepisu + aktualizacja popularności + czyszczenie cache Redis
+    // 🟢 Wyświetlanie przepisu + aktualizacja popularności
     public Recipe viewRecipe(String id) {
         logger.debug("🔍 Wywołano viewRecipe z ID: {}", id);
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
-        
+
         if (optionalRecipe.isPresent()) {
             Recipe recipe = optionalRecipe.get();
             recipe.setPopularity(recipe.getPopularity() + 1);
             Recipe updatedRecipe = recipeRepository.save(recipe);
-
-            // Po aktualizacji popularności czyszczę cache Redis, aby go odświeżyć
-            redisTemplate.delete("popular_recipes");
-            logger.info("🗑️ Cache 'popular_recipes' usunięty po aktualizacji popularności!");
-
             return updatedRecipe;
         } else {
             logger.warn("❌ Nie znaleziono przepisu o ID: {}", id);
@@ -45,37 +34,16 @@ public class RecipeService {
         return null;
     }
 
-    // 🟢 Pobieranie popularnych przepisów z Redis lub MongoDB
-    @SuppressWarnings("unchecked")
+    // 🟢 Pobieranie popularnych przepisów z MongoDB
     public List<Recipe> getPopularRecipes() {
-        ValueOperations<String, Object> ops = redisTemplate.opsForValue();
-
-        // Sprawdzenie, czy dane są już w Redis
-        if (redisTemplate.hasKey("popular_recipes")) {
-            logger.info("✅ Pobieranie popularnych przepisów z Redis!");
-            return (List<Recipe>) ops.get("popular_recipes");
-        }
-
-        // Jeśli nie ma w Redis, pobieram z MongoDB
         logger.info("📡 Pobieranie popularnych przepisów z MongoDB!");
-        List<Recipe> recipes = recipeRepository.findTop10ByOrderByPopularityDesc();
-
-        // Zapis do Redis na 10 minut
-        ops.set("popular_recipes", recipes, 600, TimeUnit.SECONDS);
-        return recipes;
+        return recipeRepository.findTop10ByOrderByPopularityDesc();
     }
 
-    // 🟢 Dodawanie nowego przepisu + czyszczenie cache "popular_recipes"
-    @CacheEvict(value = "popularRecipes", allEntries = true)
+    // 🟢 Dodawanie nowego przepisu
     public Recipe addRecipe(Recipe recipe) {
         logger.info("📌 Dodawanie nowego przepisu: {}", recipe.getTitle());
-        Recipe savedRecipe = recipeRepository.save(recipe);
-
-        // Czyszczenie cache po dodaniu nowego przepisu
-        redisTemplate.delete("popular_recipes");
-        logger.info("🗑️ Cache 'popular_recipes' usunięty po dodaniu nowego przepisu!");
-
-        return savedRecipe;
+        return recipeRepository.save(recipe);
     }
 
     // 🟢 Wyszukiwanie przepisów po tytule
@@ -102,13 +70,9 @@ public class RecipeService {
         return recipeRepository.findById(id);
     }
 
-    // 🟢 Usuwanie przepisu + czyszczenie cache "popular_recipes"
+    // 🟢 Usuwanie przepisu
     public void deleteRecipe(String id) {
         logger.warn("🗑️ Usuwanie przepisu o ID: {}", id);
         recipeRepository.deleteById(id);
-
-        // Czyszczenie cache po usunięciu przepisu
-        redisTemplate.delete("popular_recipes");
-        logger.info("🗑️ Cache 'popular_recipes' usunięty po usunięciu przepisu!");
     }
 }
