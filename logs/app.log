@@ -144,3 +144,7 @@ Action:
 
 Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
 
+2025-06-18T18:38:09.600+02:00  INFO 18748 --- [Kukino] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-18T18:38:09.600+02:00  INFO 18748 --- [Kukino] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-06-18T18:38:09.602+02:00  INFO 18748 --- [Kukino] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-06-18T18:38:10.200+02:00  INFO 18748 --- [Kukino] [http-nio-8080-exec-6] com.n1hoo.Kukino.service.RecipeService   : 📡 Pobieranie popularnych przepisów z MongoDB!
