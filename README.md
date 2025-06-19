@@ -28,7 +28,6 @@ Projekt zespołowy realizowany w ramach przedmiotu **"Projekt zespołowy systemu
 |--------|-------------|
 | Backend | Java 23, Spring Boot 3 |
 | Baza danych | MongoDB (NoSQL) |
-| Cache | Redis |
 | UI | HTML5, CSS3, Bootstrap |
 | API docs | Swagger / OpenAPI |
 | Logowanie | Spring Security + HttpSession |
@@ -49,7 +48,6 @@ Wybrano nierelacyjne bazy danych, ponieważ struktura przepisu (dynamiczna lista
 ### 🔧 Wymagania:
 - Java 17+ (lub Java 23)
 - MongoDB (`localhost:27017`)
-- Redis (`localhost:6379`)
 - Maven (`mvn` w konsoli)
 
 ### 🚀 Kroki:
