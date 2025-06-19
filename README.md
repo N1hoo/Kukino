@@ -28,7 +28,6 @@ Projekt zespołowy realizowany w ramach przedmiotu **"Projekt zespołowy systemu
 |--------|-------------|
 | Backend | Java 23, Spring Boot 3 |
 | Baza danych | MongoDB (NoSQL) |
-| Cache | Redis |
 | UI | HTML5, CSS3, Bootstrap |
 | API docs | Swagger / OpenAPI |
 | Logowanie | Spring Security + HttpSession |
