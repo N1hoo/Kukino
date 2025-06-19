@@ -48,7 +48,6 @@ Wybrano nierelacyjne bazy danych, ponieważ struktura przepisu (dynamiczna lista
 ### 🔧 Wymagania:
 - Java 17+ (lub Java 23)
 - MongoDB (`localhost:27017`)
-- Redis (`localhost:6379`)
 - Maven (`mvn` w konsoli)
 
 ### 🚀 Kroki:
